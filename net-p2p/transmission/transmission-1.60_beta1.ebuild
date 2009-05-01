@@ -8,7 +8,6 @@ DESCRIPTION="BitTorrent client"
 HOMEPAGE="http://www.transmissionbt.com/"
 
 MY_P=${P/_beta/b}
-#MY_P=${P}
 SRC_URI="http://mirrors.m0k.org/transmission/files/${MY_P}.tar.bz2"
 S=${WORKDIR}/${MY_P}
 
