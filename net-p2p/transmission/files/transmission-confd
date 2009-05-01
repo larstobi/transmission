@@ -1,0 +1,62 @@
+# For information on options, see the transmission-daemon(1) man page.
+#
+# The commented variables in this file are the defaults that are used
+# in the init-script.  You don't need to uncomment them except to
+# customize them to different values.
+
+#
+# ----- MAIN CONFIGURATION -----
+#
+
+# The folder where Transmission stores its config and .torrent files
+# TR_HOME=/var/transmission/config
+ 
+# The folder where Transmission stores downloads
+# TR_DOWNLOAD=/var/transmission/downloads
+
+# The port Transmission uses to connect to other peers
+# TR_PORT=54318
+
+# The name of the user that runs transmission-daemon and owns the files
+# TR_USERNAME=nobody
+
+# Login credentials for the Web- and the RPC-interface
+# - default: leave commented/empty to disable access authentication
+# REMOTE_USER=""
+# REMOTE_PASS=""
+# - alternative: set a user name and password
+#REMOTE_USER=admin
+#REMOTE_PASS=password
+
+#
+# ----- ADVANCED OPTIONS -----
+#
+
+# Acces control lists
+# (machines/networks allowed/denied to control transmission -- comma separated)
+# TR_ACL="+127.0.0.1"
+
+# Enable use of block lists
+# (read the Wiki about what else needs to be done)
+# TR_BLOCK=no
+
+# Control port used
+# only privileged users can use ports < 1024, this applies to REMOTE_USER
+# CTL_PORT=9091
+
+# Initial speed limits (in K/s)
+# default: no limits? 100/100 seems to be the hardcoded default
+# TR_UP_SPEED=unlimited
+# TR_DN_SPEED=unlimited
+
+# Peer exchange
+# TR_PX=no
+
+# Port mapping using NAT/UPnP
+# TR_PMAP=no
+
+# Encryption
+# Any of :
+# TR_ENCRYPT=tolerated
+# TR_ENCRYPT=prefered
+# TR_ENCRYPT=required

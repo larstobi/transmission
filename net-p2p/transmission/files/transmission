@@ -1,0 +1,80 @@
+#!/sbin/runscript
+#
+
+# DO NOT EDIT!
+# ------------
+# All configurable options are set in /etc/conf.d/transmission
+
+NAME=transmission-daemon
+declare -a OPTIONS
+OPTIONS+=" -a ${TR_ACL:=+127.0.0.1}"
+if [ -z "$TR_BLOCK" -o "$TR_BLOCK" = "no" ]; then
+   OPTIONS+=" -B"
+else
+   OPTIONS+=" -b"
+fi
+OPTIONS+=" -g ${TR_HOME:-/var/transmission/config}"
+OPTIONS+=" -p ${CTL_PORT:-9091}"
+if [ -z "$REMOTE_USER" -o -z "$REMOTE_PASS" ]; then
+   OPTIONS+=" -T"
+else
+   OPTIONS+=" -t"
+   OPTIONS+=" -u $REMOTE_USER"
+   OPTIONS+=" -v $REMOTE_PASS"
+fi
+OPTIONS+=" -w ${TR_DOWNLOAD:-/var/transmission/downloads}"
+declare -a EXTRA_OPT
+if [ -z "$TR_UP_SPEED" -o "$TR_UP_SPEED" = "unlimited" ]; then
+   EXTRA_OPT+=" -U"
+else
+   EXTRA_OPT+=" -u $TR_UP_SPEED"
+fi
+if [ -z "$TR_DN_SPEED" -o "$TR_DN_SPEED" = "unlimited" ]; then
+   EXTRA_OPT+=" -D"
+else
+   EXTRA_OPT+=" -d $TR_DN_SPEED"
+fi
+if [ -z "$TR_PX" -o "$TR_PX" = "no" ]; then
+  EXTRA_OPT+=" -X"
+else
+  EXTRA_OPT+=" -x"
+fi
+if [ -z "$TR_PMAP" -o "$TR_PMAP" = "no" ]; then
+  EXTRA_OPT+=" -M"
+else
+  EXTRA_OPT+=" -m"
+fi
+if [ -z "$TR_ENCRYPT" -o "$TR_ENCRYPT" = "tolerated" ]; then
+  EXTRA_OPT+=" -et"
+elif [ "$TR_ENCRYPT" = "prefered" ]; then
+  EXTRA_OPT+=" -ep"
+elif [ "$TR_ENCRYPT" = "required" ]; then
+  EXTRA_OPT+=" -er"
+else
+  EXTRA_OPT+=" -et"
+fi
+
+depend() {
+   need net
+}
+
+start() {
+   ebegin "Starting transmission daemon"
+   start-stop-daemon --start --quiet \
+      --chuid ${TR_USERNAME:-nobody} \
+      --exec /usr/bin/transmission-daemon -- ${OPTIONS[@]}
+   sleep 2
+   transmission-remote ${CTL_PORT:-9091} \
+      ${REMOTE_PASS:+-n $REMOTE_USER:$REMOTE_PASS} \
+      --port ${TR_PORT:-54318} ${EXTRA_OPT[@]} > /dev/null
+   eend $?
+}
+
+stop() {
+   ebegin "Stopping transmission daemon"
+   start-stop-daemon --stop --quiet --retry=TERM/30/KILL/5 \
+      --name $NAME
+   eend $?
+}
+
+# vim: set ft=gentoo-init-d ts=3 sw=3 et:
