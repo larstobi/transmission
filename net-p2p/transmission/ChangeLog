@@ -1,7 +1,13 @@
 # ChangeLog for net-p2p/transmission
 # Copyright 1999-2008 Gentoo Foundation; Distributed under the GPL v2
 
-*transmission-1.40_beta1 (01 May 2009)
+*transmission-1.60 (07 May 2009)
+
+  01 May 2009; Lars Tobias Børsting <larstobi@snota.no>
+  transmission-1.60.ebuild:
+  Version bump.
+
+*transmission-1.60_beta1 (01 May 2009)
 
   01 May 2009; Lars Tobias Børsting <larstobi@snota.no>
   transmission-1.60_beta1.ebuild:
